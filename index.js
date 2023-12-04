@@ -3,15 +3,12 @@ const API = "https://fsa-crud-2aa9294fe819.herokuapp.com/api/" + COHORT;
 
 const state = {
     events: [],
-    event: null,
 }
 
 const $partiesList = document.querySelector("#parties");
 const $addEvent = document.querySelector("#addEvent");
 
 $addEvent.addEventListener("submit", addParty);
-
-
 
 async function render() {
     await getEvents();
@@ -26,7 +23,6 @@ async function getEvents() {
         const response = await fetch(API + "/events");
         const responseJson = await response.json();
         state.events = responseJson.data;
-        console.log(state.events);
     } catch (err) {
         console.error(err.message);
     }
@@ -58,12 +54,10 @@ function renderEvents() {
         })
         return li;
     })
-    console.log(eventInfor);
     $partiesList.replaceChildren(...eventInfor);
 }
 
 async function addParty(event) {
-    // event.preventDefault();
     try {
         const dateISO = new Date(event.target.date.value);
         const dateNew = dateISO.toISOString();
@@ -73,7 +67,7 @@ async function addParty(event) {
             date: dateNew,
             location: event.target.location.value
         })
-        console.log(eventOBJ);
+
         const newEvent = await fetch(API + "/events",
             {
                 method: 'POST',
@@ -97,8 +91,8 @@ async function removeParty(eventId) {
             }
         );
         render();
-        console.log(response)
-        // const result = response.json();
+        // Attempted to pull the result with the below but was recieving and error: SyntaxError: Unexpected end of JSON input
+        // const result = await response.json();
         // console.log(result);
     } catch (err) {
         console.error(
