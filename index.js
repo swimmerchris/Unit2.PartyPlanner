@@ -76,7 +76,6 @@ async function addParty(event) {
                 body: eventOBJ,
             });
         const result = await newEvent.json();
-        console.log(result);
         render();
     } catch (error) {
         console.error(error.message);
