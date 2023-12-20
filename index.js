@@ -17,8 +17,8 @@ async function render() {
 
 render();
 
+// function to retrieve events from the events API
 async function getEvents() {
-    // TODO
     try {
         const response = await fetch(API + "/events");
         const responseJson = await response.json();
@@ -28,8 +28,8 @@ async function getEvents() {
     }
 }
 
+// function to render all events.
 function renderEvents() {
-    // TODO
     if (!state.events.length) {
         $partiesList.innerHTML = "<li>No events to be found</li>";
         return;
@@ -57,7 +57,9 @@ function renderEvents() {
     $partiesList.replaceChildren(...eventInfor);
 }
 
+// Function to add a individual party to the api
 async function addParty(event) {
+    event.preventDefault();
     try {
         const dateISO = new Date(event.target.date.value);
         const dateNew = dateISO.toISOString();
@@ -67,7 +69,6 @@ async function addParty(event) {
             date: dateNew,
             location: event.target.location.value
         })
-
         const newEvent = await fetch(API + "/events",
             {
                 method: 'POST',
@@ -82,6 +83,7 @@ async function addParty(event) {
     }
 }
 
+// Function to remove a party from the API
 async function removeParty(eventId) {
     try {
         const response = await fetch(
@@ -91,9 +93,7 @@ async function removeParty(eventId) {
             }
         );
         render();
-        // Attempted to pull the result with the below but was recieving and error: SyntaxError: Unexpected end of JSON input
-        // const result = await response.json();
-        // console.log(result);
+
     } catch (err) {
         console.error(
             `Whoops, trouble removing player #${eventId} from the roster!`,
